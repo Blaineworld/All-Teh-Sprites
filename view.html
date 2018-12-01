@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>All Teh Sprites!</title>
+    <style>
+* {
+  image-rendering: pixelated;
+  -moz-image-rendering: pixelated;
+}
+
+body, select {
+  background: darkSlateGray;
+  color: white;
+  font-family: Courier, Courier New, monospce;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  text-shadow: 0 0.25px black, 0 0.5px black, 0 0.75px black, 0 1px black, 0 1px 2px black;
+}
+
+select {
+  background: steelBlue;
+}
+
+#display-image {
+  display: block;
+  margin: auto;
+  position: relative;
+}
+    </style>
+  </head>
+  <body>
+    Select image to view: <select id="sprite-select" onchange="display(this.value)">
+      <option value="about:blank">The Word Error</option>
+      <option value="art/sheets/main.png">Main Sheet</option>
+    </select>
+    <img id="display-image"></img>
+    <script language="Javascript">
+var select = document.querySelector("#sprite-select"), img = document.querySelector("#display-image");
+
+function scale() {
+  img.style.top = "0";
+  var s = Math.min(innerWidth / img.naturalWidth, (innerHeight - img.clientTop) / img.naturalHeight);
+  if (s >= 1 / devicePixelRatio)
+    s = Math.floor(s * devicePixelRatio) / devicePixelRatio;
+  img.style.width = img.naturalWidth * s + "px";
+  img.style.height = img.naturalHeight * s + "px";
+  img.style.top = Math.floor(((innerHeight - img.clientTop) / 2 - img.naturalHeight * s / 2) * devicePixelRatio) / devicePixelRatio + "px";
+}
+
+addEventListener("resize", scale);
+
+img.addEventListener("load", function() {
+  scale();
+});
+
+img.addEventListener("error", function() {
+  this.src = "data:image/bmp;base64,Qk1SAAAAAAAAAD4AAAAoAAAAEwAAAAUAAAABAAEAAAAAABQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP///wDqrqAAiqqgAMzKwACKqqAA7u7gAA==";
+});
+
+function display(src) {
+  img.src = src;
+}
+
+display(select.value);
+    </script>
+  </body>
+</html>
